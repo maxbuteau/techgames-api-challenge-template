@@ -6,8 +6,20 @@ import { Application, Request, Response } from "express";
 
 dotenv.config();
 
+//mongodb+srv://maxbuteau:<password>@maxcluster-kggbs.mongodb.net/test?retryWrites=true&w=majority
+
 const app: Application = express();
 const port = process.env.SERVER_PORT || 3000;
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://maxbuteau:maxbuteau@maxcluster-kggbs.mongodb.net/test?retryWrites=true&w=majority"
+const client = new MongoClient(uri, { useNewUrlParser: true })
+client.connect(err => {
+    const collection = client.db("test").collection("devices");
+    // perform actions on the collection object
+    client.close();
+});
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -59,5 +71,6 @@ app.post('/articles', (req, res) =>
 });
 
 app.use((req, res) => res.status(500).send({ status: 500, message: "Not Implemented" }));
+
 
 export { app, port }
