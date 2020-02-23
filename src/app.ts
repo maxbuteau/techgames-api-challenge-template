@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { Application, Request, Response } from "express";
+import fs from 'fs';
 
 dotenv.config();
 
@@ -50,6 +51,10 @@ function nextAvailableId()
         id++;
     return id;
 }
+function commit()
+{
+    fs.writeFile('database.json', JSON.stringify(database), null, null);
+}
 
 app.get('/status', (req, res) => res.status(200).send({ "status" : "Up" }));
 app.get('/articles', (req, res) => res.status(200).send(database));
@@ -72,6 +77,7 @@ app.post('/articles', (req, res) =>
 
     req.body._id = nextAvailableId();
     database.push(req.body);
+    commit();
     res.status(200).send(req.body);
 });
 app.put('/articles/:id', (req, res) =>
@@ -84,6 +90,7 @@ app.put('/articles/:id', (req, res) =>
         res.status(404).send();
     for (var prop in req.body)
         article[prop] = req.body[prop];
+    commit();
     res.status(200).send(article);
 });
 app.delete('/articles/:id', (req, res) =>
@@ -95,6 +102,7 @@ app.delete('/articles/:id', (req, res) =>
     if (!article)
         res.status(404).send();
     database.splice(getIndex(id), 1);
+    commit();
     res.status(200).send(article);
 })
 
