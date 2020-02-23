@@ -19,10 +19,33 @@ if (port == "") {
 }
 
 var database: any[] = [];
+function findById(id: Number)
+{
+    for (var i = 0; i < database.length; i++)
+        if (database[i]._id == id)
+            return database[i];
+    return null;
+}
+function nextAvailableId()
+{
+    var id = 1;
+    while (findById(id))
+        id++;
+    return id;
+}
 
 app.get('/status', (req, res) => res.send({ "status" : "Up" }));
-
 app.get('/articles', (req, res) => res.send(database));
+app.get('/articles/:id', (req, res) =>
+{
+    var id = parseInt(req.params.id);
+    if (id == NaN)
+        res.status(400).send();
+    var article = findById(id);
+    if (!article)
+        res.status(404).send();
+    res.send(article);
+});
 app.post('/articles', (req, res) =>
 {
     if (!req.body.title) res.status(400).send();
@@ -30,7 +53,7 @@ app.post('/articles', (req, res) =>
     if (!req.body.body) res.status(400).send();
     if (!req.body.author) res.status(400).send();
 
-    req.body._id = database.length;
+    req.body._id = nextAvailableId();
     database.push(req.body);
     res.send(req.body);
 });
