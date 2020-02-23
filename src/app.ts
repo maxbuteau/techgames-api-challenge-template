@@ -31,12 +31,17 @@ if (port == "") {
 }
 
 var database: any[] = [];
-function findById(id: Number)
+function getIndex(id: Number)
 {
     for (var i = 0; i < database.length; i++)
         if (database[i]._id == id)
-            return database[i];
-    return null;
+            return i;
+    return -1;
+}
+function findById(id: Number)
+{
+    var index = getIndex(id);
+    return index != -1 ? database[index] : null;
 }
 function nextAvailableId()
 {
@@ -69,6 +74,29 @@ app.post('/articles', (req, res) =>
     database.push(req.body);
     res.status(200).send(req.body);
 });
+app.put('/articles/:id', (req, res) =>
+{
+    var id = parseInt(req.params.id);
+    if (isNaN(id))
+        res.status(400).send();
+    var article = findById(id);
+    if (!article)
+        res.status(404).send();
+    for (var prop in req.body)
+        article[prop] = req.body[prop];
+    res.status(200).send(article);
+});
+app.delete('/articles/:id', (req, res) =>
+{
+    var id = parseInt(req.params.id);
+    if (isNaN(id))
+        res.status(400).send();
+    var article = findById(id);
+    if (!article)
+        res.status(404).send();
+    database.splice(getIndex(id), 1);
+    res.status(200).send(article);
+})
 
 app.use((req, res) => res.status(500).send({ status: 500, message: "Not Implemented" }));
 
