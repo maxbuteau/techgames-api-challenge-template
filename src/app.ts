@@ -25,7 +25,7 @@ app.use((req: Request, res: Response) => {
     });
 }); */
 
-app.get('/status', (req, res) => res.send({ "status" : "up" }));
+app.get('/status', (req, res) => res.send({ "status" : "Up" }));
 
 app.post('/articles', (req, res) => res.send(req.params));
 export { app, port }
