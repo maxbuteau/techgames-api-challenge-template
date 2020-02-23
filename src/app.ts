@@ -26,6 +26,18 @@ app.get('/db', (req, res) =>
     res.send(array);
     array.push("Lol");
 });
+
+app.post('/articles', (req, res) => {
+    if (!req.body.title) res.status(400).send();
+    if (!req.body.subtitle) res.status(400).send();
+    if (!req.body.body) res.status(400).send();
+    if (!req.body.author) res.status(400).send();
+
+    req.body._id = array.length;
+    array.push(req.body);
+    res.send(req.body);
+});
+
 app.post('/articles/:id', (req, res) => res.send({ params: req.params, body: req.body }));
 
 app.use((req, res) => res.status(500).send({ status: 500, message: "Not Implemented" }));
