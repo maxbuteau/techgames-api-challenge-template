@@ -17,12 +17,14 @@ if (port == "") {
     console.log("Missing environment variables for configuration (check .env.example and create a .env)")
     process.exit(1);
 }
-
+/*
 app.use((req: Request, res: Response) => {
     res.status(500).send({
         status: 500,
         message: "Not Implemented"
     });
-});
+}); */
+
+app.get('/status', (req, res) => res.send({ "status" : "up" }))
 
 export { app, port }
