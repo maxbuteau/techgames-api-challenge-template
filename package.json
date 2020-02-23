@@ -9,8 +9,8 @@
     "tsc": "tsc",
     "build": "npm-run-all clean tsc",
     "dev:start": "npm-run-all build start",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/server",
+    "start": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

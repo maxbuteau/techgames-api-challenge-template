@@ -22,7 +22,7 @@ if (port == "") {
 
 var array: any[] = [];
 
-app.get('/status', (req, res) => res.send({ "status" : "up" }));
+app.get('/status', (req, res) => res.send({ "status" : "Up" }));
 app.get('/db', (req, res) => 
 {
     res.send(array);
