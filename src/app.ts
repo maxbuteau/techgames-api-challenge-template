@@ -39,7 +39,7 @@ app.get('/articles', (req, res) => res.send(database));
 app.get('/articles/:id', (req, res) =>
 {
     var id = parseInt(req.params.id);
-    if (id == NaN)
+    if (isNaN(id))
         res.status(400).send();
     var article = findById(id);
     if (!article)
