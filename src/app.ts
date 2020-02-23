@@ -14,7 +14,7 @@ const port = process.env.SERVER_PORT || 3000;
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://maxbuteau:maxbuteau@maxcluster-kggbs.mongodb.net/test?retryWrites=true&w=majority"
 const client = new MongoClient(uri, { useNewUrlParser: true })
-client.connect(err => {
+client.connect((err: String) => {
     const collection = client.db("test").collection("devices");
     // perform actions on the collection object
     client.close();
@@ -46,8 +46,8 @@ function nextAvailableId()
     return id;
 }
 
-app.get('/status', (req, res) => res.send({ "status" : "Up" }));
-app.get('/articles', (req, res) => res.send(database));
+app.get('/status', (req, res) => res.status(200).send({ "status" : "Up" }));
+app.get('/articles', (req, res) => res.status(200).send(database));
 app.get('/articles/:id', (req, res) =>
 {
     var id = parseInt(req.params.id);
@@ -56,7 +56,7 @@ app.get('/articles/:id', (req, res) =>
     var article = findById(id);
     if (!article)
         res.status(404).send();
-    res.send(article);
+    res.status(200).send(article);
 });
 app.post('/articles', (req, res) =>
 {
@@ -67,7 +67,7 @@ app.post('/articles', (req, res) =>
 
     req.body._id = nextAvailableId();
     database.push(req.body);
-    res.send(req.body);
+    res.status(200).send(req.body);
 });
 
 app.use((req, res) => res.status(500).send({ status: 500, message: "Not Implemented" }));
